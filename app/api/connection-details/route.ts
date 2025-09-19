@@ -17,26 +17,29 @@ export async function POST(req: Request) {
   try {
     // Parse agent configuration from request body
     const body = await req.json();
-    const agentName: string = body?.room_config?.agents?.[0]?.agent_name;
+    // const agentName: string = body?.room_config?.agents?.[0]?.agent_name;
 
     // Generate participant name (keeping same logic)
     const participantName = 'user';
-    const participantIdentity = `voice_assistant_user_${Math.floor(Math.random() * 10_000)}`;
-    
+    // const participantIdentity = `voice_assistant_user_${Math.floor(Math.random() * 10_000)}`;
+
     // Call FastAPI backend to get token
-    const response = await fetch(`${FASTAPI_URL}/api/get-token?participant=${encodeURIComponent(participantName)}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // For development with self-signed certificates
-      // Remove this in production with proper SSL certificates
-      ...(process.env.NODE_ENV === 'development' && {
-        agent: new (require('https').Agent)({
-          rejectUnauthorized: false
-        })
-      })
-    });
+    const response = await fetch(
+      `${FASTAPI_URL}/api/get-token?participant=${encodeURIComponent(participantName)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // For development with self-signed certificates
+        // Remove this in production with proper SSL certificates
+        // ...(process.env.NODE_ENV === 'development' && {
+        //   agent: new (require('https').Agent)({
+        //     rejectUnauthorized: false,
+        //   }),
+        // }),
+      }
+    );
 
     if (!response.ok) {
       const errorText = await response.text();

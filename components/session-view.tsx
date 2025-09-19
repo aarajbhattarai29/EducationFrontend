@@ -1,17 +1,20 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {
+  // useEffect,
+  useState,
+} from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
-  type AgentState,
-  ConnectionQualityIndicator,
-  ParticipantName,
-  ParticipantTile,
+  // type AgentState,
+  // ConnectionQualityIndicator,
+  // ParticipantName,
+  // ParticipantTile,
   type ReceivedChatMessage,
-  useRoomContext,
-  useVoiceAssistant,
+  // useRoomContext,
+  // useVoiceAssistant,
 } from '@livekit/components-react';
-import { toastAlert } from '@/components/alert-toast';
+// import { toastAlert } from '@/components/alert-toast';
 import { AgentControlBar } from '@/components/livekit/agent-control-bar/agent-control-bar';
 import { ChatEntry } from '@/components/livekit/chat/chat-entry';
 import { ChatMessageView } from '@/components/livekit/chat/chat-message-view';
@@ -21,9 +24,9 @@ import { useDebugMode } from '@/hooks/useDebug';
 import type { AppConfig } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
-function isAgentAvailable(agentState: AgentState) {
-  return agentState == 'listening' || agentState == 'thinking' || agentState == 'speaking';
-}
+// function isAgentAvailable(agentState: AgentState) {
+//   return agentState == 'listening' || agentState == 'thinking' || agentState == 'speaking';
+// }
 
 interface SessionViewProps {
   appConfig: AppConfig;
@@ -37,10 +40,10 @@ export const SessionView = ({
   sessionStarted,
   ref,
 }: React.ComponentProps<'div'> & SessionViewProps) => {
-  const { state: agentState } = useVoiceAssistant();
+  // const { state: agentState } = useVoiceAssistant();
   const [chatOpen, setChatOpen] = useState(false);
   const { messages, send } = useChatAndTranscription();
-  const room = useRoomContext();
+  // const room = useRoomContext();
 
   useDebugMode({
     enabled: process.env.NODE_END !== 'production',
@@ -164,10 +167,9 @@ export const SessionView = ({
                 <p className="animate-text-shimmer inline-block !bg-clip-text text-sm font-semibold text-transparent">
                   Agent is listening, ask it a question
                 </p>
-                <h1>efgfrev</h1>
               </motion.div>
             )}
-            
+
             {/* <ConnectionQualityIndicator /> */}
             {/* <ParticipantTile>
               <ParticipantName />

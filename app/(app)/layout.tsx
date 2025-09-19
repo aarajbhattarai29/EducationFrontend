@@ -27,7 +27,6 @@ export default async function AppLayout({ children }: AppLayoutProps) {
             className="hidden size-6 dark:block"
           />
         </a>
-
       </header>
       {children}
     </>
