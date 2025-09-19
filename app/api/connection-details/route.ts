@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     // Generate participant name (keeping same logic)
     const participantName = 'user';
     // const participantIdentity = `voice_assistant_user_${Math.floor(Math.random() * 10_000)}`;
-
+  
     // Call FastAPI backend to get token
     const response = await fetch(
       `${FASTAPI_URL}/api/get-token?participant=${encodeURIComponent(participantName)}`,
@@ -33,11 +33,11 @@ export async function POST(req: Request) {
         },
         // For development with self-signed certificates
         // Remove this in production with proper SSL certificates
-        // ...(process.env.NODE_ENV === 'development' && {
-        //   agent: new (require('https').Agent)({
-        //     rejectUnauthorized: false,
-        //   }),
-        // }),
+        ...(process.env.NODE_ENV === 'development' && {
+          agent: new (require('https').Agent)({
+            rejectUnauthorized: false,
+          }),
+        }),
       }
     );
 
