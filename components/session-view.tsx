@@ -73,6 +73,7 @@ export const SessionView = ({
             ),
           });
           room.disconnect();
+        }
       }, 20_000);
 
       return () => clearTimeout(timeout);
@@ -173,3 +174,4 @@ export const SessionView = ({
       </div>
     </section>
   );
+};
