@@ -69,7 +69,7 @@ export const SessionView = ({
                 >
                   See quickstart guide
                 </a>
-                .
+                
               </p>
             ),
           });
