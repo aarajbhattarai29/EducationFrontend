@@ -33,11 +33,11 @@ export async function POST(req: Request) {
         },
         // For development with self-signed certificates
         // Remove this in production with proper SSL certificates
-        ...(process.env.NODE_ENV === 'development' && {
-          agent: new (require('https').Agent)({
-            rejectUnauthorized: false,
-          }),
-        }),
+        // ...(process.env.NODE_ENV === 'development' && {
+        //   agent: new (require('https').Agent)({
+        //     rejectUnauthorized: false,
+        //   }),
+        // }),
       }
     );
 
