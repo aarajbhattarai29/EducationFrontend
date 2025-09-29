@@ -1,14 +1,20 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {
+  // useEffect,
+  useState,
+} from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
-  type AgentState,
+  // type AgentState,
+  // ConnectionQualityIndicator,
+  // ParticipantName,
+  // ParticipantTile,
   type ReceivedChatMessage,
-  useRoomContext,
-  useVoiceAssistant,
+  // useRoomContext,
+  // useVoiceAssistant,
 } from '@livekit/components-react';
-import { toastAlert } from '@/components/alert-toast';
+// import { toastAlert } from '@/components/alert-toast';
 import { AgentControlBar } from '@/components/livekit/agent-control-bar/agent-control-bar';
 import { ChatEntry } from '@/components/livekit/chat/chat-entry';
 import { ChatMessageView } from '@/components/livekit/chat/chat-message-view';
@@ -18,9 +24,9 @@ import { useDebugMode } from '@/hooks/useDebug';
 import type { AppConfig } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
-function isAgentAvailable(agentState: AgentState) {
-  return agentState == 'listening' || agentState == 'thinking' || agentState == 'speaking';
-}
+// function isAgentAvailable(agentState: AgentState) {
+//   return agentState == 'listening' || agentState == 'thinking' || agentState == 'speaking';
+// }
 
 interface SessionViewProps {
   appConfig: AppConfig;
@@ -34,10 +40,10 @@ export const SessionView = ({
   sessionStarted,
   ref,
 }: React.ComponentProps<'div'> & SessionViewProps) => {
-  const { state: agentState } = useVoiceAssistant();
+  // const { state: agentState } = useVoiceAssistant();
   const [chatOpen, setChatOpen] = useState(false);
   const { messages, send } = useChatAndTranscription();
-  const room = useRoomContext();
+  // const room = useRoomContext();
 
   useDebugMode({
     enabled: process.env.NODE_END !== 'production',
@@ -47,38 +53,39 @@ export const SessionView = ({
     await send(message);
   }
 
-  useEffect(() => {
-    if (sessionStarted) {
-      const timeout = setTimeout(() => {
-        if (!isAgentAvailable(agentState)) {
-          const reason =
-            agentState === 'connecting'
-              ? 'Agent did not join the room. '
-              : 'Agent connected but did not complete initializing. ';
+  // useEffect(() => {
+  //   if (sessionStarted) {
+  //     const timeout = setTimeout(() => {
+  //       if (!isAgentAvailable(agentState)) {
+  //         const reason =
+  //           agentState === 'connecting'
+  //             ? 'Agent did not join the room. '
+  //             : 'Agent connected but did not complete initializing. ';
 
-          toastAlert({
-            title: 'Session ended',
-            description: (
-              <p className="w-full">
-                {reason}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://refobe.com"
-                  className="whitespace-nowrap underline"
-                >
-                  See quickstart guide
-                </a>
-              </p>
-            ),
-          });
-          room.disconnect();
-        }
-      }, 20_000);
+  //         toastAlert({
+  //           title: 'Session ended',
+  //           description: (
+  //             <p className="w-full">
+  //               {reason}
+  //               <a
+  //                 target="_blank"
+  //                 rel="noopener noreferrer"
+  //                 href="https://docs.livekit.io/agents/start/voice-ai/"
+  //                 className="whitespace-nowrap underline"
+  //               >
+  //                 See quickstart guide
+  //               </a>
+  //               .
+  //             </p>
+  //           ),
+  //         });
+  //         room.disconnect();
+  //       }
+  //     }, 20_000);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [agentState, sessionStarted, room]);
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [agentState, sessionStarted, room]);
 
   const { supportsChatInput, supportsVideoInput, supportsScreenShare } = appConfig;
   const capabilities = {
@@ -115,6 +122,7 @@ export const SessionView = ({
                 transition={{ duration: 0.5, ease: 'easeOut' }}
               >
                 <ChatEntry hideName key={message.id} entry={message} />
+                <h1>dsffv</h1>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -162,12 +170,18 @@ export const SessionView = ({
               </motion.div>
             )}
 
+            {/* <ConnectionQualityIndicator /> */}
+            {/* <ParticipantTile>
+              <ParticipantName />
+              <ConnectionQualityIndicator />
+            </ParticipantTile> */}
             <AgentControlBar
               capabilities={capabilities}
               onChatOpenChange={setChatOpen}
               onSendMessage={handleSendMessage}
             />
           </div>
+          {/* skrim */}
           <div className="from-background border-background absolute top-0 left-0 h-12 w-full -translate-y-full bg-gradient-to-t to-transparent" />
         </motion.div>
       </div>
