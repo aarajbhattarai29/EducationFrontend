@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import { headers } from 'next/headers';
 import { APP_CONFIG_DEFAULTS } from '@/app-config';
 import { ApplyThemeScript, ThemeToggle } from '@/components/theme-toggle';
-import { getAppConfig } from '@/lib/utils';
+// import { getAppConfig } from '@/lib/utils';
 import './globals.css';
 
 const publicSans = Public_Sans({
@@ -42,7 +42,7 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const hdrs = await headers();
+  // const hdrs = await headers();
   const { accent, accentDark, pageTitle, pageDescription } = await getAppConfig(hdrs);
 
   // check provided accent colors against defaults, and apply styles if they differ (or in development mode)
