@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import https from "https";
 
-const FASTAPI_URL = process.env.FASTAPI_URL || "http://localhost:8000";
+const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000';
 
 // Disable Next.js caching
 export const revalidate = 0;
@@ -15,12 +15,12 @@ export type ConnectionDetails = {
 
 export async function POST(req: Request) {
   try {
-    const participantName = "user";
+    const participantName = 'user';
 
     // --- Configure fetch options ---
     const fetchOptions: RequestInit = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
     };
 
     // If running locally (self-signed certs allowed)
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       headers: { "Cache-Control": "no-store" },
     });
   } catch (error) {
-    console.error("Error connecting to FastAPI backend:", error);
+    console.error('Error connecting to FastAPI backend:', error);
     const message =
       error instanceof Error ? error.message : "Unknown error occurred";
     return new NextResponse(message, { status: 500 });
