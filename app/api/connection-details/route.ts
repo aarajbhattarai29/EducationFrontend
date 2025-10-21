@@ -28,8 +28,7 @@ export async function POST(req: Request) {
     const agent = new https.Agent({
       rejectUnauthorized: false,
     });
-    // @ts-expect-error  
-    // If running locally (self-signed certs allowed)
+    // @ts-expect-error If running locally (self-signed certs allowed)
     fetchOptions.agent = agent;
     // --- Make request to FastAPI ---
     const response = await fetch(
