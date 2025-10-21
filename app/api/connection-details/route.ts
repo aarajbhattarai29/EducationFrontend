@@ -24,14 +24,14 @@ export async function POST(req: Request) {
     };
 
     // If running locally (self-signed certs allowed)
-    if (process.env.NODE_ENV === "development") {
+    
       // Create HTTPS agent that ignores self-signed certs
       const agent = new https.Agent({
         rejectUnauthorized: false,
       });
       // @ts-ignore
       fetchOptions.agent = agent;
-    }
+    
 
     // --- Make request to FastAPI ---
     const response = await fetch(
