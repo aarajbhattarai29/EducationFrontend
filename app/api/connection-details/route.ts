@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import https from 'http';
+import https from 'https';
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000';
 
