@@ -24,11 +24,11 @@ export async function POST(req: Request) {
     };
 
     // If running locally (self-signed certs allowed)
-      // Create HTTPS agent that ignores self-signed certs
+    // Create HTTPS agent that ignores self-signed certs
     const agent = new https.Agent({
-        rejectUnauthorized: false,
+      rejectUnauthorized: false,
       });
-    // @ts-ignore
+    // @ts-expect-error
     fetchOptions.agent = agent;
     // --- Make request to FastAPI ---
     const response = await fetch(
@@ -57,8 +57,7 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error('Error connecting to FastAPI backend:', error);
-    const message =
-      error instanceof Error ? error.message : 'Unknown error occurred';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
     return new NextResponse(message, { status: 500 });
   }
 }
