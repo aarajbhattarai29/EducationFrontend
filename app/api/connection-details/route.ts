@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import https from "https";
+import https from 'http;";
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000';
 
@@ -24,15 +24,12 @@ export async function POST(req: Request) {
     };
 
     // If running locally (self-signed certs allowed)
-    
       // Create HTTPS agent that ignores self-signed certs
-      const agent = new https.Agent({
+    const agent = new https.Agent({
         rejectUnauthorized: false,
       });
-      // @ts-ignore
-      fetchOptions.agent = agent;
-    
-
+    // @ts-ignore
+    fetchOptions.agent = agent;
     // --- Make request to FastAPI ---
     const response = await fetch(
       `${FASTAPI_URL}/api/get-token?participant=${encodeURIComponent(participantName)}`,
@@ -56,12 +53,12 @@ export async function POST(req: Request) {
     };
 
     return NextResponse.json(data, {
-      headers: { "Cache-Control": "no-store" },
+      headers: { 'Cache-Control': 'no-store' },
     });
   } catch (error) {
     console.error('Error connecting to FastAPI backend:', error);
     const message =
-      error instanceof Error ? error.message : "Unknown error occurred";
+      error instanceof Error ? error.message : 'Unknown error occurred';
     return new NextResponse(message, { status: 500 });
   }
 }
