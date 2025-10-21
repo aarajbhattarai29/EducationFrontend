@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import https from "https";
 
-// FastAPI backend URL - you should define this in your .env.local
-const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000';
+const FASTAPI_URL = process.env.FASTAPI_URL || "http://localhost:8000";
 
-// don't cache the results
+// Disable Next.js caching
 export const revalidate = 0;
 
 export type ConnectionDetails = {
@@ -15,30 +15,28 @@ export type ConnectionDetails = {
 
 export async function POST(req: Request) {
   try {
-    // Parse agent configuration from request body
-    // const body = await req.json();
-    // const agentName: string = body?.room_config?.agents?.[0]?.agent_name;
+    const participantName = "user";
 
-    // Generate participant name (keeping same logic)
-    const participantName = 'user';
-    // const participantIdentity = `voice_assistant_user_${Math.floor(Math.random() * 10_000)}`;
-    // Call FastAPI backend to get token
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    // --- Configure fetch options ---
+    const fetchOptions: RequestInit = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+
+    // If running locally (self-signed certs allowed)
+    if (process.env.NODE_ENV === "development") {
+      // Create HTTPS agent that ignores self-signed certs
+      const agent = new https.Agent({
+        rejectUnauthorized: false,
+      });
+      // @ts-ignore
+      fetchOptions.agent = agent;
+    }
+
+    // --- Make request to FastAPI ---
     const response = await fetch(
       `${FASTAPI_URL}/api/get-token?participant=${encodeURIComponent(participantName)}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // For development with self-signed certificates
-        // Remove this in production with proper SSL certificates
-        // ...(process.env.NODE_ENV === 'development' && {
-        //   agent: new (require('https').Agent)({
-        //     rejectUnauthorized: false,
-        //   }),
-        // }),
-      }
+      fetchOptions
     );
 
     if (!response.ok) {
@@ -48,11 +46,8 @@ export async function POST(req: Request) {
 
     const tokenData = await response.json();
 
-    // Extract room name from the token (you might need to decode JWT to get this)
-    // For now, using a generated room name similar to original logic
     const roomName = `voice_assistant_room_${Math.floor(Math.random() * 10_000)}`;
 
-    // Return connection details in the same format
     const data: ConnectionDetails = {
       serverUrl: tokenData.url,
       roomName,
@@ -60,16 +55,13 @@ export async function POST(req: Request) {
       participantName,
     };
 
-    const headers = new Headers({
-      'Cache-Control': 'no-store',
+    return NextResponse.json(data, {
+      headers: { "Cache-Control": "no-store" },
     });
-
-    return NextResponse.json(data, { headers });
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error connecting to FastAPI backend:', error);
-      return new NextResponse(error.message, { status: 500 });
-    }
-    return new NextResponse('Unknown error occurred', { status: 500 });
+    console.error("Error connecting to FastAPI backend:", error);
+    const message =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    return new NextResponse(message, { status: 500 });
   }
 }
