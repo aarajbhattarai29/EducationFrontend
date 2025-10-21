@@ -42,7 +42,7 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  // const hdrs = await headers();
+  const hdrs = await headers();
   const { accent, accentDark, pageTitle, pageDescription } = await getAppConfig(hdrs);
 
   // check provided accent colors against defaults, and apply styles if they differ (or in development mode)
